@@ -50,4 +50,12 @@ pipeline {
             }
         }
     }
+        post {
+        always {
+            echo 'Archivin results...'
+            archiveArtifacts artifacts: 'results/**/*', fingerprint: true, allowEmptyArchive: true
+            echo 'Sending reports to DefectDojo...'
+            defectDojoPublisher(artifact: 'results/zap_xml_report.xml', productName: 'Juice Shop', scanType: 'ZAP Scan', engagementName: 'jakub.kolataj@xtb.com')
+        }
+    }
 } 
