@@ -27,13 +27,10 @@ pipeline {
                     sleep 5
                 '''
                 sh '''
-                    docker rm -f zap || true
-                    docker run --name zap \
-                    --add-host=host.docker.internal:host-gateway \
+                    docker run --name zap\
                     -v "C:/Users/kkuuu/OneDrive/Pulpit/ABCdevsecops/abcd-student/.zap:/zap/wrk/:rw" \
-                    -t ghcr.io/zaproxy/zaproxy:stable bash -c \
-                    "zap.sh -cmd -addonupdate; zap.sh -cmd -addoninstall communityScripts -addoninstall pscanrulesAlpha -addoninstall pscanrulesBeta -autorun /zap/wrk/passive.yaml" \
-                    || true
+                    -t ghcr.io/zaproxy/zaproxy:stable\
+                    bash -c "zap.sh -cmd -addonupdate; zap.sh -cmd -addoninstall communityScripts -addoninstall pscanrulesAlpha -addoninstall pscanrulesBeta -autorun /zap/wrk/passive.yml" || true                
                 '''
             }
             post {
