@@ -40,11 +40,6 @@ pipeline {
                 always {
                     // ${{WORKSPACE}} resolves to /var/jenkins_home/workspace/ABCD
                     sh '''
-                        sleep 5
-                        mkdir -p results/
-                        sleep 15
-                        docker exec zap ls -la /zap/wrk/reports
-                                                
                         docker cp zap:/zap/wrk/zap_html_report.html ${WORKSPACE}/results/zap_html_report.html
                         docker cp zap:/zap/wrk/zap_xml_report.xml ${WORKSPACE}/results/zap_xml_report.xml
                         docker stop zap juice-shop
@@ -54,5 +49,4 @@ pipeline {
             }
         }
     }
-    
 } 
