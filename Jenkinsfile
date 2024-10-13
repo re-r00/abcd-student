@@ -42,8 +42,9 @@ pipeline {
                     sh '''
                         sleep 5
                         mkdir -p results/
-                        sleep 5
-                         
+                        sleep 15
+                        docker exec zap ls -la /zap/wrk/reports
+                                                
                         docker cp zap:/zap/wrk/zap_html_report.html ${WORKSPACE}/results/zap_html_report.html
                         docker cp zap:/zap/wrk/zap_xml_report.xml ${WORKSPACE}/results/zap_xml_report.xml
                         docker stop zap juice-shop
