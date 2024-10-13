@@ -27,6 +27,7 @@ pipeline {
                     sleep 5
                 '''
                 sh '''
+                    docker rm -f zap || true
                     docker run --name zap \
                     --add-host=host.docker.internal:host-gateway \
                     -v "${WORKSPACE}/.zap:/zap/wrk/:rw" \
