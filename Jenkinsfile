@@ -20,15 +20,17 @@ pipeline {
         stage('DAST') {
             steps {
                 sh '''
+                    docker rm -f juice-shop || true
                     docker run --name juice-shop -d \
                     -p 3000:3000 \
                     bkimminich/juice-shop
                     sleep 5
                 '''
                 sh '''
+                    docker rm -f zap || true
                     docker run --name zap \
                     --add-host=host.docker.internal:host-gateway \
-                    -v //c/Users/re-r00/Projects/BezpiecznyKod/demos/abcd-student/.zap:/zap/wrk/:rw \
+                    -v /Users/re-r00/Projects/BezpiecznyKod/demos/abcd-student/.zap:/zap/wrk/:rw \
                     -t ghcr.io/zaproxy/zaproxy:stable bash -c \
                     "zap.sh -cmd -addonupdate; zap.sh -cmd -addoninstall communityScripts -addoninstall pscanrulesAlpha -addoninstall pscanrulesBeta -autorun /zap/wrk/passive_scan.yaml" \
                     || true
@@ -36,15 +38,22 @@ pipeline {
             }
             post {
                 always {
-                    // ${{WORKSPACE}} resolves to /var/jenkins_home/workspace/ABCD
                     sh '''
-                        docker cp zap:/zap/wrk/zap_html_report.html ${WORKSPACE}/results/zap_html_report.html
-                        docker cp zap:/zap/wrk/zap_xml_report.xml ${WORKSPACE}/results/zap_xml_report.xml
+                        docker cp zap:/zap/wrk/zap_html_report.html "${WORKSPACE}/results/zap_html_report.html"
+                        docker cp zap:/zap/wrk/zap_xml_report.xml "${WORKSPACE}/results/zap_xml_report.xml"
                         docker stop zap juice-shop
-                        docker rm zap
-                        '''
+                        docker rm zap juice-shop
+                    '''
                 }
             }
         }
     }
-} 
+    post {
+        always {
+            echo 'Archivin results...'
+            archiveArtifacts artifacts: 'results/**/*', fingerprint: true, allowEmptyArchive: true
+            echo 'Sending reports to DefectDojo...'
+            defectDojoPublisher(artifact: 'results/zap_xml_report.xml', productName: 'Juice Shop', scanType: 'ZAP Scan', engagementName: 'jakub.kolataj@xtb.com')
+        }
+    }
+}
