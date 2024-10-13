@@ -39,8 +39,8 @@ pipeline {
             post {
                 always {
                     sh '''
-                        docker cp zap:/zap/wrk/zap_html_report.html /var/jenkins_home/workspace/ABCD pipeline/results/zap_html_report.html
-                        docker cp zap:/zap/wrk/zap_xml_report.xml /var/jenkins_home/workspace/ABCD pipeline/results/zap_html_report.xml
+                        docker cp zap:/zap/wrk/zap_html_report.html /var/jenkins_home/workspace/ABCD/results/zap_html_report.html
+                        docker cp zap:/zap/wrk/zap_xml_report.xml /var/jenkins_home/workspace/ABCD/results/zap_html_report.xml
                         docker stop zap juice-shop
                         docker rm zap juice-shop
                     '''
