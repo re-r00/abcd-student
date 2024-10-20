@@ -47,7 +47,7 @@ pipeline {
         defectDojoPublisher(
             artifact: 'results/sca_report.json',  
             productName: 'Juice Shop',            
-            scanType: 'OSV-Scanner',          
+            scanType: 'OSV Scan',          
             engagementName: 'jakub.kolataj@xtb.com')
         }
     }
