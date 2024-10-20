@@ -39,4 +39,16 @@ pipeline {
             }
         }
     }
+    post {
+    always {
+        echo 'Archiving results...'
+        archiveArtifacts artifacts: 'results/**/*', fingerprint: true, allowEmptyArchive: true
+        echo 'Sending SCA reports to DefectDojo...'
+        defectDojoPublisher(
+            artifact: 'results/sca_report.txt',  
+            productName: 'Juice Shop',            
+            scanType: 'SCA - Dependency Scan',          
+            engagementName: 'jakub.kolataj@xtb.com' 
+        )
+    }
 } 
