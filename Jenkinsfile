@@ -20,6 +20,8 @@ pipeline {
         stage('SCA') {
             steps {
                 sh '''
+                    docker rm -f juice-shop || true
+                
                     docker run --name juice-shop -d \
                     -p 3000:3000 \
                     bkimminich/juice-shop
