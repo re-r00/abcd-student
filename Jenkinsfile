@@ -48,7 +48,7 @@ pipeline {
             artifact: 'results/sca_report.txt',  
             productName: 'Juice Shop',            
             scanType: 'SCA - Dependency Scan',          
-            engagementName: 'jakub.kolataj@xtb.com' 
-        )
+            engagementName: 'jakub.kolataj@xtb.com')
+        }
     }
-} 
+}
