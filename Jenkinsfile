@@ -28,7 +28,7 @@ pipeline {
                     sleep 5
                 '''
                 sh '''
-                    osv-scanner scan --lockfile package-lock.json > results/sca_report.txt || true
+                    osv-scanner scan --lockfile package-lock.json > results/sca_report.json || true
                 '''
             }
             post {
@@ -45,9 +45,9 @@ pipeline {
         archiveArtifacts artifacts: 'results/**/*', fingerprint: true, allowEmptyArchive: true
         echo 'Sending SCA reports to DefectDojo...'
         defectDojoPublisher(
-            artifact: 'results/sca_report.txt',  
+            artifact: 'results/sca_report.json',  
             productName: 'Juice Shop',            
-            scanType: 'SCA - Dependency Scan',          
+            scanType: 'OSV-Scanner',          
             engagementName: 'jakub.kolataj@xtb.com')
         }
     }
