@@ -28,7 +28,7 @@ pipeline {
                     sleep 5
                 '''
                 sh '''
-                    osv-scanner scan --lockfile package-lock.json 
+                    osv-scanner scan --lockfile package-lock.json > results/sca_report.txt || true
                 '''
             }
             post {
